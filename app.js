@@ -1,22 +1,35 @@
 var budgetController = (function() {})();
 
 var UIController = (function() {
+
+    var DOMStrings = {
+        inputType: '.add__type',
+        inputDescription: '.add__description',
+        inputValue: '.add__value',
+        inputBtn: ".add__btn"
+    }
   
     return {
         getInput: function() {
 
             return {
-                type: document.querySelector('.add__type').value, //will be inc or exp
-                description: document.querySelector('.add__description').value,
-                value: document.querySelector('.add__value').value
+                type: document.querySelector(DOMStrings.inputType).value, //will be inc or exp
+                description: document.querySelector(DOMStrings.inputDescription).value,
+                value: document.querySelector(DOMStrings.inputValue).value
             }
            
+        },
+        getDOMStrings: function() {
+            return DOMStrings;
         }
     }
 })();
 
 //global app controller to control UIController and budgetController functions
 var controller = (function(budgetCtrl, UICtrl) {
+
+    var DOM = UICtrl.getDOMStrings()
+
   var ctrlAddItem = function() {
     //1. Get the filed input data
     var input = UICtrl.getInput()
@@ -28,11 +41,11 @@ var controller = (function(budgetCtrl, UICtrl) {
     //4. Calculate budget
 
     //5. Display budget on user interface
+
     
-    console.log('it works on enter')
   };
 
-  document.querySelector(".add__btn").addEventListener("click", ctrlAddItem);
+  document.querySelector(DOM.inputBtn).addEventListener("click", ctrlAddItem);
 
   document.addEventListener("keypress", function(event) {
     if (event.keyCode === 13 || event.which === 13) {
