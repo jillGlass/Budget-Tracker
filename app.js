@@ -58,8 +58,8 @@ var UIController = (function() {
     inputDescription: ".add__description",
     inputValue: ".add__value",
     inputBtn: ".add__btn",
-    incomeContainer: "income__list",
-    expensesContainer: "income__list"
+    incomeContainer: ".income__list",
+    expensesContainer: ".expenses__list"
   };
 
   return {
@@ -84,10 +84,10 @@ var UIController = (function() {
 
       // replace placeholder text with some actual data
       newHtml = html.replace('%id%', obj.id);
-      newHtml = newHtml.replace('%description%', obj.description);
+    newHtml = newHtml.replace('%description%', obj.description);
       newHtml = newHtml.replace('%value%', obj.value);
       // insert the html into the DOM
-      document.querySelector(element).insertAdjacentElement('beforeend', newHtml);
+      document.querySelector(element).insertAdjacentHTML('beforeend', newHtml);
     },
     getDOMStrings: function() {
       return DOMStrings;
