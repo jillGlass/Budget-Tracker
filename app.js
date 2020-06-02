@@ -148,7 +148,10 @@ var UIController = (function() {
     },
 
     displayBudget: function(obj) {
-
+      document.querySelector(DOMStrings.budgetLabel).textContent = obj.budget;
+      document.querySelector(DOMStrings.incomeLabel).textContent = obj.totalInc;
+      document.querySelector(DOMStrings.expensesLabel).textContent = obj.totalExp;
+      document.querySelector(DOMStrings.percentageLabel).textContent = obj.percentage;
     },
 
     getDOMStrings: function() {
@@ -177,7 +180,7 @@ var controller = (function(budgetCtrl, UICtrl) {
     //2. Return the budget
     var budget = budgetCtrl.getBudget();
     //3. Display budget on user interface
-    console.log(budget)
+    UICtrl.displayBudget(budget);
   };
 
   var ctrlAddItem = function() {
