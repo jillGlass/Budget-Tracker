@@ -97,6 +97,10 @@ var UIController = (function() {
     inputBtn: ".add__btn",
     incomeContainer: ".income__list",
     expensesContainer: ".expenses__list",
+    budgetLabel: ".budget__value",
+    incomeLabel: ".budget__income--value",
+    expensesLabel: ".budget__expenses--value",
+    percentageLabel: ".budget__expenses--percentage"
   };
 
   return {
@@ -141,6 +145,10 @@ var UIController = (function() {
         current.value = "";
       });
       fieldsArray[0].focus();
+    },
+
+    displayBudget: function(obj) {
+
     },
 
     getDOMStrings: function() {
