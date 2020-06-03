@@ -15,11 +15,11 @@ var budgetController = (function() {
   };
 
   var calculateTotal = function(type) {
-  var sum = 0;
+    var sum = 0;
 
-  data.allItems[type].forEach(function(cur){
-    sum = sum + cur.value;
-  })
+    data.allItems[type].forEach(function(cur) {
+      sum = sum + cur.value;
+    });
     data.totals[type] = sum;
   };
 
@@ -33,7 +33,7 @@ var budgetController = (function() {
       inc: [],
     },
     budget: 0,
-    percentage: -1
+    percentage: -1,
   };
 
   return {
@@ -61,17 +61,16 @@ var budgetController = (function() {
 
     calculateBudget: function() {
       // calculate total income and expenses
-      calculateTotal('inc');
-      calculateTotal('exp');
+      calculateTotal("inc");
+      calculateTotal("exp");
       // calculate the budget: income - expenses
       data.budget = data.totals.inc - data.totals.exp;
       // calculate the percentage of income that we spent
-      if(data.totals.inc > 0) {
+      if (data.totals.inc > 0) {
         data.percentage = Math.round((data.totals.exp / data.totals.inc) * 100);
-      }else {
+      } else {
         data.percentage = -1;
       }
-      
     },
 
     getBudget: function() {
@@ -79,7 +78,19 @@ var budgetController = (function() {
         budget: data.budget,
         totalInc: data.totals.inc,
         totalExp: data.totals.exp,
-        percentage: data.percentage
+        percentage: data.percentage,
+      };
+    },
+
+    deleteItem: function(type, id) {
+      var ids, index;
+
+     ids = data.allItems[type].map(function(current) {
+        return current.id
+      });
+      index = ids.indexOf(id);
+      if(index !== -1) {
+        data.allItems[type].splice(index, 1);
       }
     },
 
@@ -101,7 +112,7 @@ var UIController = (function() {
     incomeLabel: ".budget__income--value",
     expensesLabel: ".budget__expenses--value",
     percentageLabel: ".budget__expenses--percentage",
-    container: ".container"
+    container: ".container",
   };
 
   return {
@@ -151,13 +162,14 @@ var UIController = (function() {
     displayBudget: function(obj) {
       document.querySelector(DOMStrings.budgetLabel).textContent = obj.budget;
       document.querySelector(DOMStrings.incomeLabel).textContent = obj.totalInc;
-      document.querySelector(DOMStrings.expensesLabel).textContent = obj.totalExp;
-      
+      document.querySelector(DOMStrings.expensesLabel).textContent =
+        obj.totalExp;
 
-      if(obj.percentage > 0) {
-        document.querySelector(DOMStrings.percentageLabel).textContent = obj.percentage + '%';
+      if (obj.percentage > 0) {
+        document.querySelector(DOMStrings.percentageLabel).textContent =
+          obj.percentage + "%";
       } else {
-        document.querySelector(DOMStrings.percentageLabel).textContent = '---';
+        document.querySelector(DOMStrings.percentageLabel).textContent = "---";
       }
     },
 
@@ -179,7 +191,9 @@ var controller = (function(budgetCtrl, UICtrl) {
         ctrlAddItem();
       }
     });
-    document.querySelector(DOM.container).addEventListener('click',ctrlDeleteItem);
+    document
+      .querySelector(DOM.container)
+      .addEventListener("click", ctrlDeleteItem);
   };
 
   var updateBudget = function() {
@@ -214,16 +228,22 @@ var controller = (function(budgetCtrl, UICtrl) {
 
   var ctrlDeleteItem = function(event) {
     //function that is called when a user hits the delete item button
-    var itemID, splitID, type;
+    var itemID, splitID, type, ID;
 
     itemID = event.target.parentNode.parentNode.parentNode.parentNode.id;
 
-    if(itemID) {
-      splitID = itemID.split('-');
+    if (itemID) {
+      splitID = itemID.split("-");
       type = splitID[0];
+      ID = parseInt(splitID[1]);
     }
+    // delete item from data structure
+    budgetCtrl.deleteItem(type, ID);
 
-  }
+    //delete item from UI
+
+    // update budget and show on UI
+  };
 
   return {
     init: function() {
@@ -231,7 +251,8 @@ var controller = (function(budgetCtrl, UICtrl) {
         budget: 0,
         totalInc: 0,
         totalExp: 0,
-        percentage: -1});
+        percentage: -1,
+      });
       setUpEventListeners();
     },
   };
